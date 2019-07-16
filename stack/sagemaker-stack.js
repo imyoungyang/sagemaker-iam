@@ -31,6 +31,11 @@ const addExuctionRolePolicy = (role) => {
     resources: ['arn:aws:s3:::SageMaker/*'],
     actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject']
   }));
+  
+  role.addToPolicy(new iam.PolicyStatement({
+    resources: ['*'],
+    actions: ['iam:GetRole']
+  }));
 }
 
 
