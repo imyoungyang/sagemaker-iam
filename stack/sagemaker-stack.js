@@ -23,13 +23,13 @@ const addExuctionRolePolicy = (role) => {
   role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'))
   
   role.addToPolicy(new iam.PolicyStatement({
-    resources: ['arn:aws:s3:::SageMaker'],
+    resources: ['arn:aws:s3:::SageMaker', 'arn:aws:s3:::sagemaker/*'],
     actions: ['s3:ListBucket'] 
   }));
   
   role.addToPolicy(new iam.PolicyStatement({
-    resources: ['arn:aws:s3:::SageMaker/*'],
-    actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject']
+    resources: ['arn:aws:s3:::SageMaker/*', 'arn:aws:s3:::sagemaker/*'],
+    actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:CreateBucket']
   }));
   
   role.addToPolicy(new iam.PolicyStatement({

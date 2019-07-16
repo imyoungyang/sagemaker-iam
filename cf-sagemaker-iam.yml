@@ -28,13 +28,18 @@ Resources:
         Statement:
           - Action: s3:ListBucket
             Effect: Allow
-            Resource: arn:aws:s3:::SageMaker
+            Resource:
+              - arn:aws:s3:::SageMaker
+              - arn:aws:s3:::sagemaker/*
           - Action:
               - s3:GetObject
               - s3:PutObject
               - s3:DeleteObject
+              - s3:CreateBucket
             Effect: Allow
-            Resource: arn:aws:s3:::SageMaker/*
+            Resource:
+              - arn:aws:s3:::SageMaker/*
+              - arn:aws:s3:::sagemaker/*
           - Action: iam:GetRole
             Effect: Allow
             Resource: "*"
