@@ -38,6 +38,25 @@ const addExuctionRolePolicy = (role) => {
   }));
 }
 
+/*
+* iam SageMaker Workshop Group
+*/
+const addGroupPolicy = (group) => {
+  group.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSageMakerFullAccess'));
+  group.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCloud9Administrator'));
+  group.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsReadOnlyAccess'));
+  
+  group.addToPolicy(new iam.PolicyStatement({
+    resources: ['arn:aws:s3:::SageMaker', 'arn:aws:s3:::sagemaker/*'],
+    actions: ['s3:ListBucket'] 
+  }));
+  
+  group.addToPolicy(new iam.PolicyStatement({
+    resources: ['arn:aws:s3:::SageMaker/*', 'arn:aws:s3:::sagemaker/*'],
+    actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:CreateBucket']
+  }));
+  
+}
 
 //Stacks
 class SageMakerSimpleStack extends cdk.Stack {
@@ -49,6 +68,10 @@ class SageMakerSimpleStack extends cdk.Stack {
       assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com')
     });
     addExuctionRolePolicy(role);
+    
+    //User Group
+    const group = new iam.Group(this, 'SageMakerWorkshop');
+    addGroupPolicy(group);
   }
 }
 exports.SageMakerSimpleStack = SageMakerSimpleStack;

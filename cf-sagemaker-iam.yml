@@ -49,6 +49,52 @@ Resources:
         - Ref: SageMakerExeuctionRole50A8DBE3
     Metadata:
       aws:cdk:path: prod-sagemaker-stack/SageMakerExeuctionRole/DefaultPolicy/Resource
+  SageMakerWorkshopA220E036:
+    Type: AWS::IAM::Group
+    Properties:
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonSageMakerFullAccess
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AWSCloud9Administrator
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/CloudWatchLogsReadOnlyAccess
+    Metadata:
+      aws:cdk:path: prod-sagemaker-stack/SageMakerWorkshop/Resource
+  SageMakerWorkshopDefaultPolicy63CD0CD3:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: s3:ListBucket
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::SageMaker
+              - arn:aws:s3:::sagemaker/*
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+              - s3:DeleteObject
+              - s3:CreateBucket
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::SageMaker/*
+              - arn:aws:s3:::sagemaker/*
+        Version: "2012-10-17"
+      PolicyName: SageMakerWorkshopDefaultPolicy63CD0CD3
+      Groups:
+        - Ref: SageMakerWorkshopA220E036
+    Metadata:
+      aws:cdk:path: prod-sagemaker-stack/SageMakerWorkshop/DefaultPolicy/Resource
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
